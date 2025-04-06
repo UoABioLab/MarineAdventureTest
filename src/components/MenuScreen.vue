@@ -82,7 +82,7 @@
   }
   // 退出游戏
   const quitGame = () => {
-    window.location.href = 'https://uoabiolab.github.io/MarineAdventure/'
+    window.location.href = 'https://uoabiolab.github.io/GameIndexTest//'
   }
   </script>
   <style scoped>
