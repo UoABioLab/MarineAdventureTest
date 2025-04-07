@@ -13,6 +13,7 @@
         ref="canvasElement"
         class="pose-canvas"
       ></canvas>
+
       <!-- 状态显示 -->
       <div class="status-overlay">
         <h3 class="camera-title">Camera View</h3>
@@ -133,7 +134,7 @@ const onResults = (results) => {
       // 转换为屏幕坐标
       const screenY = shoulderY * window.innerHeight
       emit('shoulder-position', screenY)  // 发送实际的屏幕坐标
-      console.log('Emitting shoulder position:', screenY) // 添加日志
+      // console.log('Emitting shoulder position:', screenY) // 添加日志
     }
     
     // 绘制骨架
@@ -233,6 +234,7 @@ onUnmounted(() => {
   height: 100%;
   transform: scaleX(-1);
 }
+
 .status-overlay {
   position: absolute;
   width: 100%;

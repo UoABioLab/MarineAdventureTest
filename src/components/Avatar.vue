@@ -51,7 +51,7 @@
   // 监听位置变化
   watch(() => props.position, (newPos) => {
     if (!avatarCanvas.value) return
-    console.log('Avatar position updated:', newPos) // 添加日志
+    // console.log('Avatar position updated:', newPos) // 添加日志
     const ctx = avatarCanvas.value.getContext('2d')
     ctx.clearRect(0, 0, avatarCanvas.value.width, avatarCanvas.value.height)
     drawAvatar(ctx)

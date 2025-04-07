@@ -25,10 +25,10 @@
         @collect="handleBonusCollect"
       />
       <div class="score-display">
-        <div class="life">Life: {{ life }}</div>
-        <div class="score">Score: {{ score }}</div>
+        <div class="life">{{ t('lives') }}: {{ life }}</div>
+        <div class="score"> {{ t('score') }}: {{ score }}</div>
         <div class="time" :class="{ 'time-warning': gameTime <= 30 }">
-          Time: {{ gameTime }}s
+          {{ t('countTime') }}: {{ gameTime }}s
         </div>
       </div>
     </template>
@@ -37,13 +37,13 @@
       <div class="game-over-content">
         <h1>Game Over</h1>
         <div class="stats">
-          <p>Time Played: {{ GAME_TIME_LIMIT - gameTime }}s</p>
-          <p>Final Score: {{ score }}</p>
-          <p>Life: {{ life }}</p>
+          <p>{{ t('timePlayed') }}: {{ GAME_TIME_LIMIT - gameTime }}</p>
+          <p>{{ t('finalScore') }}: {{ score }}</p>
+          <p>{{ t('finalLife') }}: {{ life }}</p>
         </div>
         <div class="buttons">
-          <button @click="restartGame">Try Again</button>
-          <button @click="backToMenu">Back to Menu</button>
+          <button @click="restartGame">{{ t('retry')}}</button>
+          <button @click="backToMenu">{{ t('back')}}</button>
         </div>
       </div>
     </div>
@@ -79,6 +79,7 @@
   </div>
 </template>
 <script setup>
+import { t } from '../Language/language.js'
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Avatar from './Avatar.vue'
 import Obstacle from './Obstacle.vue'
@@ -262,19 +263,19 @@ const calculateObstacleHeight = () => {
   // 根据难度设置高度系数
   let baseConfig
   switch (difficulty.value) {
-  case 'Easy':
+  case 'easy':
     baseConfig = {
       up: { baseValue: 0.53, variance: 0.1 },    // 上方障碍物较矮，浮动大
       down: { baseValue: 0.32, variance: 0.05 }  // 下方障碍物较矮
     }
     break
-  case 'Medium':
+  case 'medium':
     baseConfig = {
       up: { baseValue: 0.6, variance: 0.08 },   // 上方增高，浮动适中
       down: { baseValue: 0.35, variance: 0.04 }
     }
     break
-  case 'Hard':
+  case 'hard':
     baseConfig = {
       up: { baseValue: 0.7, variance: 0.05 },   // 上方更高，浮动小
       down: { baseValue: 0.4, variance: 0.03 }  // 下方也更高，更有挑战性
@@ -540,7 +541,7 @@ const startGame = async () => {
 // 添加校准阶段函数
 const startCalibration = async () => {
   isCalibrating.value = true
-  calibrationText.value = '请保持站立姿势'
+  calibrationText.value = t('calibrate')
   calibrationProgress.value = 0
   calibrationSamples.value = []
   // 等待校准完成
@@ -759,7 +760,7 @@ canvas {
   z-index: 100;
 }
 .game-over-content {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(143, 212, 245, 0.9);
   padding: 40px;
   border-radius: 20px;
   text-align: center;
@@ -767,7 +768,8 @@ canvas {
 }
 .game-over h1 {
   color: #FF0000;
-  font-size: 48px;
+  font-size: 64px;
+  font-weight: bold;
   margin-bottom: 30px;
   text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
@@ -776,7 +778,8 @@ canvas {
 }
 .stats p {
   color: white;
-  font-size: 24px;
+  font-size: 48px;
+  font-weight: bold;
   margin: 10px 0;
 }
 .buttons {
@@ -786,7 +789,8 @@ canvas {
 }
 .buttons button {
   padding: 15px 30px;
-  font-size: 18px;
+  font-size: 36px;
+  font-weight: bold;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -842,22 +846,25 @@ canvas {
   100% { opacity: 1; }
 }
 .calibration {
+  z-index: 1100; /* 高于其他所有层 */
   position: fixed;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(161, 233, 255, 0.95);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
 }
 .calibration-text {
-  color: white;
-  font-size: 24px;
+  color: rgb(0, 0, 0);
+  font-size: 48px;
   margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* ✅ 添加阴影增强可读性 */
+  font-weight: bold; /* 可选，增加清晰度 */
 }
 .calibration-progress {
-  width: 300px;
+  width: 100%;;
   height: 20px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;

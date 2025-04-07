@@ -3,9 +3,10 @@
       <!-- 添加背景图片 -->
       <div class="menu-background"></div>
       <!-- 标题 -->
-      <h1 class="game-title">Fish Game (Squat)</h1>
+      <h1 class="game-title">{{ t('title') }}</h1>
+      
       <!-- 玩家ID输入框 -->
-      <div class="input-box">
+      <!-- <div class="input-box">
         <input 
           type="text" 
           v-model="playerId"
@@ -14,11 +15,12 @@
           @focus="isInputActive = true"
           @blur="isInputActive = false"
         >
-      </div>
+      </div> -->
+
       <!-- 难度选择 -->
       <div class="dropdown">
         <div class="dropdown-header" @click="toggleDropdown">
-          {{ selectedDifficulty || 'Select Difficulty' }}
+          {{ selectedDifficulty ? t(selectedDifficulty) : t('selectDifficulty') }}
         </div>
         <div class="dropdown-options" v-if="isDropdownOpen">
           <div 
@@ -27,7 +29,7 @@
             class="dropdown-option"
             @click.stop="selectDifficulty(difficulty)"
           >
-            {{ difficulty }}
+            {{ t(difficulty) }}
           </div>
         </div>
       </div>
@@ -37,18 +39,19 @@
         :disabled="!canStartGame"
         @click="startGame"
       >
-        Start Game
+      {{ t('start') }}
       </button>
       <!-- 退出按钮 -->
       <button 
-        class="quit-button"
-        @click="quitGame"
+        class="Mainpage-button"
+        @click="backToMain"
       >
-        Quit
+      {{ t('back') }}
       </button>
     </div>
   </template>
   <script setup>
+  import { t } from '../Language/language.js'
   import { ref, computed } from 'vue'
   const emit = defineEmits(['start-game', 'quit-game'])
   const isGameStarted = ref(false)
@@ -56,10 +59,11 @@
   const selectedDifficulty = ref('')
   const isDropdownOpen = ref(false)
   const isInputActive = ref(false)
-  const difficulties = ['Easy', 'Medium', 'Hard']
+  const difficulties = ['easy', 'medium', 'hard']
   // 检查是否可以开始游戏
   const canStartGame = computed(() => {
-    return playerId.value.trim() && selectedDifficulty.value
+    // return playerId.value.trim() && selectedDifficulty.value
+    return !!selectedDifficulty.value
   })
   // 切换下拉菜单
   const toggleDropdown = () => {
@@ -74,19 +78,25 @@
   const startGame = () => {
     if (canStartGame.value) {
       emit('start-game', {
-        playerId: playerId.value,
+        // playerId: playerId.value,
         difficulty: selectedDifficulty.value
       })
       isGameStarted.value = true
     }
   }
   // 退出游戏
-  const quitGame = () => {
-    window.location.href = 'https://uoabiolab.github.io/GameIndexTest//'
+  const backToMain = () => {
+    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const mainPage = isLocal
+    ? '/GameIndex/index.html'  // 本地路径
+    : 'https://uoabiolab.github.io/GameIndex/';  // GitHub Pages 路径
+
+    window.location.href = mainPage;
   }
   </script>
   <style scoped>
   .menu-screen {
+    font-family: 'Arial', sans-serif;
     position: fixed;
     top: 0;
     left: 0;
@@ -113,11 +123,11 @@
   }
   .game-title {
     color: #FFFF00;
-    font-size: 48px;
-    margin-bottom: 50px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 70px;
+    margin-bottom: 200px;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
   }
-  .input-box {
+  /* .input-box {
     width: 300px;
     margin-bottom: 20px;
   }
@@ -134,14 +144,16 @@
   .input-box input.active {
     border-color: #00ff00;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-  }
+  } */
   .dropdown {
     width: 300px;
     margin-bottom: 20px;
     position: relative;
   }
   .dropdown-header {
-    padding: 12px;
+    padding: 36px;
+    font-size: 36px;
+    font-weight: bold;
     background: #0066cc;
     color: white;
     border-radius: 8px;
@@ -159,7 +171,9 @@
     overflow: hidden;
   }
   .dropdown-option {
-    padding: 12px;
+    padding: 36px;
+    font-size: 36px;
+    font-weight: bold;
     color: white;
     cursor: pointer;
     transition: background 0.3s ease;
@@ -167,30 +181,31 @@
   .dropdown-option:hover {
     background: #0066cc;
   }
-  .start-button, .quit-button {
+  .start-button, .Mainpage-button {
     width: 300px;
-    padding: 12px;
+    padding: 36px;
     margin: 10px 0;
     border: none;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 36px;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
   }
   .start-button {
-    background: #00cc00;
-    color: white;
+    background: #45f045;
+    color: rgb(255, 255, 255);
   }
   .start-button:disabled {
     background: #666666;
     cursor: not-allowed;
   }
-  .quit-button {
+  .Mainpage-button {
     background: #cc0000;
     color: white;
     margin-top: 20px;
   }
-  .quit-button:hover {
+  .Mainpage-button:hover {
     background: #ff0000;
     transform: scale(1.05);
   }

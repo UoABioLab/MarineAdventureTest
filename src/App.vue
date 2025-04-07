@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+
 import CameraView from './components/CameraView.vue'
 import GameCanvas from './components/GameCanvas.vue'
 import MenuScreen from './components/MenuScreen.vue'
@@ -137,7 +138,7 @@ const handleGameQuit = () => {
 // 处理肩部位置更新
 const onShoulderPosition = (shoulderY) => {
   if (gameCanvas.value && (isGameStarted.value || isCountingDown.value)) {
-    console.log('Updating position:', shoulderY)
+    // console.log('Updating position:', shoulderY)
     gameCanvas.value.updateAvatarPosition(shoulderY)
   }
 }
