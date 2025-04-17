@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/balancegame/FruitCuttingMasterTestBuild/',
   plugins: [vue()],
   server: {
     port: 9205
